@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning Ankle Exoskeleton Control for Reactive Standing Balance Through Neuromusculoskeletal Simulation</title>
+<meta name="description" content="A simulation-to-real framework that trains a balance-assistive ankle exoskeleton controller in neuromusculoskeletal simulation and deploys it on hardware without subject-specific tuning.">
+<meta property="og:title" content="Learning Ankle Exoskeleton Control for Reactive Standing Balance Through Neuromusculoskeletal Simulation">
+<meta property="og:description" content="Balance-assistive ankle exoskeleton control learned entirely in neuromusculoskeletal simulation and deployed on hardware.">
+<meta property="og:type" content="website">
+<style>
+  :root {
+    --ink: #111827;
+    --body: #374151;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --wash: #f6f8fa;
+    --accent: #1d8fd1;
+    --accent-dark: #146a9c;
+    --alert: #dc2626;
+    --maxw: 1040px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--body);
+    background: #fff;
+    line-height: 1.65;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+  .narrow { max-width: 780px; margin-left: auto; margin-right: auto; }
+
+  /* Header */
+  header.hero { padding: 72px 0 40px; text-align: center; border-bottom: 1px solid var(--line); }
+  .hero h1 {
+    font-size: clamp(1.7rem, 4vw, 2.6rem);
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0 auto 22px;
+    max-width: 900px;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .authors { font-size: 1.15rem; color: var(--ink); margin: 0 0 6px; }
+  .authors span + span::before { content: "·"; margin: 0 12px; color: var(--muted); }
+  .affil { color: var(--muted); margin: 0 0 26px; }
+  .links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 18px; border-radius: 999px;
+    background: var(--ink); color: #fff; text-decoration: none;
+    font-size: 0.95rem; font-weight: 600;
+    transition: background 0.15s;
+  }
+  .btn:hover { background: var(--accent-dark); }
+  .btn.soon { background: #fff; color: var(--muted); border: 1px solid var(--line); cursor: default; }
+  .btn.soon:hover { background: #fff; }
+  .btn small { font-weight: 500; opacity: 0.8; }
+
+  /* Sections */
+  section { padding: 56px 0; }
+  section.alt { background: var(--wash); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  h2 { font-size: 1.6rem; color: var(--ink); margin: 0 0 18px; letter-spacing: -0.01em; text-align: center; }
+  h3 { font-size: 1.1rem; color: var(--ink); margin: 0 0 6px; }
+  p { margin: 0 0 16px; }
+  .lede { text-align: center; color: var(--muted); margin: -6px auto 28px; max-width: 720px; }
+
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 36px 0 0; }
+  .stat { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 22px 18px; text-align: center; }
+  .stat b { display: block; font-size: 2.1rem; color: var(--accent); line-height: 1.1; letter-spacing: -0.02em; }
+  .stat span { display: block; margin-top: 8px; font-size: 0.93rem; color: var(--muted); line-height: 1.4; }
+
+  /* Media */
+  .media { background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .media video, .media img { display: block; width: 100%; height: auto; }
+  figure { margin: 0; }
+  figcaption { font-size: 0.93rem; color: var(--muted); margin-top: 12px; text-align: center; max-width: 820px; margin-left: auto; margin-right: auto; }
+  .placeholder {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    min-height: 220px; padding: 24px; color: var(--muted);
+    border: 2px dashed #cbd5e1; border-radius: 14px; background: #fff; font-size: 0.95rem;
+  }
+  .placeholder code { background: var(--wash); padding: 2px 6px; border-radius: 5px; font-size: 0.88rem; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 0 0 18px; }
+  .tab {
+    appearance: none; border: 1px solid var(--line); background: #fff; color: var(--body);
+    padding: 9px 18px; border-radius: 999px; font: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+  }
+  .tab:hover { border-color: var(--accent); color: var(--accent-dark); }
+  .tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .tab small { font-weight: 500; opacity: 0.85; }
+
+  /* Method steps */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
+  .step { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+  .step .tag { display: inline-block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 8px; }
+  .step p { font-size: 0.96rem; margin: 0; }
+
+  .figgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
+  .stack > * + * { margin-top: 40px; }
+
+  /* BibTeX */
+  pre {
+    background: #0f172a; color: #e2e8f0; padding: 20px 22px; border-radius: 14px;
+    overflow-x: auto; font-size: 0.86rem; line-height: 1.55; margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  .copyrow { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+  .copy { border: 1px solid var(--line); background: #fff; color: var(--body); border-radius: 8px; padding: 5px 12px; font: inherit; font-size: 0.85rem; cursor: pointer; }
+  .copy:hover { border-color: var(--accent); color: var(--accent-dark); }
+
+  footer { padding: 36px 0 56px; text-align: center; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--line); }
+  footer a { color: var(--accent-dark); }
+
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    header.hero { padding: 48px 0 32px; }
+    section { padding: 40px 0; }
+    .stats, .steps, .figgrid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Learning Ankle Exoskeleton Control for Reactive Standing Balance Through Neuromusculoskeletal Simulation</h1>
+    <p class="authors"><span>Maria T. Tagliaferri</span><span>Inseung Kang</span></p>
+    <p class="affil">Department of Mechanical Engineering, Carnegie Mellon University</p>
+    <nav class="links" aria-label="Paper links">
+      <!-- TODO: replace each "soon" button with a real link, e.g.
+           <a class="btn" href="static/paper.pdf">Paper</a> -->
+      <span class="btn soon">Paper <small>coming soon</small></span>
+      <span class="btn soon">arXiv <small>coming soon</small></span>
+      <span class="btn soon">Code <small>coming soon</small></span>
+      <a class="btn" href="#videos">Videos</a>
+      <a class="btn" href="#bibtex">BibTeX</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section id="abstract">
+  <div class="wrap">
+    <h2>Abstract</h2>
+    <div class="narrow">
+      <p>Deficits in reactive balance can increase fall risk among older adults and individuals with neuromuscular impairments, motivating the need for interventions that improve balance recovery. Wearable robotic exoskeletons offer a promising approach to addressing this need by augmenting balance control. However, developing controllers that deliver appropriately timed and scaled assistance remains challenging, as evaluating each candidate strategy requires repeated exposure to destabilizing perturbations.</p>
+      <p>We propose a simulation-to-real framework that combines motion imitation and reinforcement learning to develop balance-assistive ankle exoskeleton control. A muscle-driven neuromusculoskeletal model was trained using a small set of motion-capture data from a single subject to reproduce kinematic and kinetic responses to backward-translation perturbations. This model served as a virtual human for training a reinforcement-learning exoskeleton controller. The resulting controller generated bilateral ankle assistance using only inertial sensor measurements, without explicit perturbation detection.</p>
+      <p>We implemented the controller on-board a bilateral ankle exoskeleton and evaluated it in five healthy subjects whose data were not used for training. Assistance increased the perturbation magnitude that subjects could withstand without stepping by 11.8% and reduced peak center-of-mass displacement and velocity by 13.5% and 28.2%, respectively. Individual benefits varied with baseline recovery strategy and body mass. These results indicate that a single virtual human can yield transferable balance assistance, and that more diverse virtual humans could further improve its effectiveness.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>+11.8%</b><span>higher balance threshold with assistance (2.8 ± 1.7 cm of belt translation)</span></div>
+      <div class="stat"><b>&minus;13.5%</b><span>peak forward center-of-mass displacement</span></div>
+      <div class="stat"><b>&minus;28.2%</b><span>peak center-of-mass velocity</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="method" class="alt">
+  <div class="wrap">
+    <h2>Simulation-to-real framework</h2>
+    <p class="lede">A virtual human learns to respond to perturbations like a real one, then an exoskeleton policy learns to help it, and that policy runs directly on the device.</p>
+    <figure>
+      <div class="media" data-fig="static/images/fig1_framework.png" data-alt="Overview of the simulation-to-real framework"></div>
+      <figcaption>Overview of the framework. (A) Stage 1: training the human policy to reproduce recorded responses to backward-translation perturbations. (B) Stage 2: training the exoskeleton controller to reduce center-of-mass excursion and increase the balance threshold of the simulated human. (C) Deployment on the ankle exoskeleton using on-board sensor inputs.</figcaption>
+    </figure>
+    <div class="steps">
+      <div class="step">
+        <span class="tag">Stage 1</span>
+        <h3>Motion imitation</h3>
+        <p>A muscle-driven model with 18 muscles is trained with Soft Actor&ndash;Critic to track about 2 minutes of motion-capture data from one subject, reproducing joint angles and moments during backward belt translations.</p>
+      </div>
+      <div class="step">
+        <span class="tag">Stage 2</span>
+        <h3>Exoskeleton policy</h3>
+        <p>With the human policy frozen, an exoskeleton policy learns ankle torque from a 200 ms history of shank and foot angular velocity. Timing and magnitude are not prescribed; they emerge from a stability-focused reward.</p>
+      </div>
+      <div class="step">
+        <span class="tag">Deployment</span>
+        <h3>On-board control</h3>
+        <p>The policy runs on a bilateral ankle exoskeleton (up to 16 Nm) using only its inertial sensors, with no perturbation detection and no subject-specific tuning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="videos">
+  <div class="wrap">
+    <h2>In simulation</h2>
+    <p class="lede">The same 23.2 cm backward belt translation, with and without the learned policy. The exoskeleton torque is shown underneath, synchronized to the animation.</p>
+    <figure>
+      <div class="media">
+        <video controls muted loop playsinline autoplay preload="metadata" src="static/videos/simulation_23p2cm.mp4"></video>
+      </div>
+      <figcaption>Left: simulated human without the exoskeleton. Right: with the learned exoskeleton policy. Each clip plays once in real time and then at 0.25&times; speed.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="hardware" class="alt">
+  <div class="wrap">
+    <h2>On hardware</h2>
+    <p class="lede">The same perturbation magnitude with the exoskeleton off and on. The measured right-side exoskeleton torque is time-aligned with the video.</p>
+    <div class="tabs" role="tablist" aria-label="Perturbation magnitude">
+      <button class="tab" role="tab" aria-selected="true" data-src="static/videos/hardware_20p5cm.mp4">20.5 cm</button>
+      <button class="tab" role="tab" aria-selected="false" data-src="static/videos/hardware_23p2cm.mp4">23.2 cm</button>
+      <button class="tab" role="tab" aria-selected="false" data-src="static/videos/hardware_26p2cm.mp4">26.2 cm</button>
+    </div>
+    <figure>
+      <div class="media">
+        <video id="hwvideo" controls muted loop playsinline preload="metadata" src="static/videos/hardware_20p5cm.mp4"></video>
+      </div>
+      <figcaption>Left: exoskeleton off (zero commanded torque). Right: exoskeleton on with the simulation-trained controller. Videos are synchronized at perturbation onset and play once in real time, then at 0.25&times; speed.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <h2>Results</h2>
+    <p class="lede">Five healthy participants whose data were not used for training.</p>
+    <div class="stack">
+      <figure>
+        <div class="media" data-fig="static/images/fig3_sim2real.png" data-alt="Simulation-to-real evaluation of the learned controller"></div>
+        <figcaption><strong>Sim-to-real transfer.</strong> The human policy tracked recorded joint angles with an RMSE of 0.6 ± 0.2° and joint moments with 0.07 ± 0.04 Nm/kg. On hardware, assistance began 87 ± 12 ms after perturbation onset, and the simulation predicted the reduction in biological ankle moment (R² = 0.81).</figcaption>
+      </figure>
+      <div class="figgrid">
+        <figure>
+          <div class="media" data-fig="static/images/fig4_balance_outcomes.png" data-alt="Effect of assistance on balance threshold and center-of-mass motion"></div>
+          <figcaption><strong>Balance outcomes.</strong> Assistance raised the balance threshold and reduced center-of-mass displacement and velocity relative to the base of support.</figcaption>
+        </figure>
+        <figure>
+          <div class="media" data-fig="static/images/fig5_recovery_strategy.png" data-alt="Change in balance threshold versus hip-to-ankle moment ratio"></div>
+          <figcaption><strong>Who benefits most.</strong> Participants with more ankle-dominant recovery strategies, and lighter participants, gained the most from assistance.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="bibtex" class="alt">
+  <div class="wrap narrow">
+    <h2>BibTeX</h2>
+    <div class="copyrow"><button class="copy" type="button" id="copybib">Copy</button></div>
+    <!-- TODO: update the entry type, venue and year once the paper is published -->
+<pre id="bib">@misc{tagliaferri2026ankleexo,
+  title  = {Learning Ankle Exoskeleton Control for Reactive Standing Balance
+            Through Neuromusculoskeletal Simulation},
+  author = {Tagliaferri, Maria T. and Kang, Inseung},
+  year   = {2026}
+}</pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Carnegie Mellon University · Department of Mechanical Engineering</p>
+    <p>Simulations were run with <a href="https://hyfydy.com">Hyfydy</a> and SCONE.</p>
+  </div>
+</footer>
+
+<script>
+  // Figures: show the image if the file exists, otherwise a labelled placeholder.
+  document.querySelectorAll('[data-fig]').forEach(function (box) {
+    var src = box.getAttribute('data-fig');
+    var img = new Image();
+    img.alt = box.getAttribute('data-alt') || '';
+    img.onload = function () { box.appendChild(img); };
+    img.onerror = function () {
+      box.classList.remove('media');
+      box.classList.add('placeholder');
+      box.innerHTML = '<span>Figure coming soon<br>Add <code>' + src + '</code></span>';
+    };
+    img.src = src;
+  });
+
+  // Hardware video tabs
+  var hw = document.getElementById('hwvideo');
+  document.querySelectorAll('.tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
+      tab.setAttribute('aria-selected', 'true');
+      hw.src = tab.getAttribute('data-src');
+      hw.play().catch(function () {});
+    });
+  });
+
+  // Play videos only while they are on screen
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.play().catch(function () {}); } else { e.target.pause(); }
+      });
+    }, { threshold: 0.35 });
+    document.querySelectorAll('video').forEach(function (v) { io.observe(v); });
+  }
+
+  // Copy BibTeX
+  document.getElementById('copybib').addEventListener('click', function () {
+    var btn = this;
+    navigator.clipboard.writeText(document.getElementById('bib').textContent).then(function () {
+      btn.textContent = 'Copied';
+      setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+    });
+  });
+</script>
+</body>
+</html>
