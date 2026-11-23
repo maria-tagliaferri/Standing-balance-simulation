@@ -9,19 +9,14 @@ Website for "Learning Ankle Exoskeleton Control for Reactive Standing Balance Th
 - `static/images/` — paper figures (add these; see below)
 - `.nojekyll` — tells GitHub Pages to serve the files as-is
 
-## Adding the figures
+## Figures
 
-Save the figures with these names and they appear automatically (until then the page shows a placeholder):
-
-- `static/images/fig1_framework.png`
-- `static/images/fig3_sim2real.png`
-- `static/images/fig4_balance_outcomes.png`
-- `static/images/fig5_recovery_strategy.png`
+The five paper figures are in `static/images/` (`fig1_framework.png` to `fig5_recovery_strategy.png`). To update one, replace the file under the same name.
 
 ## Still to fill in (search for `TODO` in `index.html`)
 
-- Paper, arXiv and Code links in the header
-- BibTeX venue and year
+- Code link in the header
+- BibTeX venue once the paper is published
 
 ## Publishing on GitHub Pages
 

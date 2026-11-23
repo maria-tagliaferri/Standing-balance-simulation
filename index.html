@@ -78,6 +78,9 @@
   /* Media */
   .media { background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
   .media video, .media img { display: block; width: 100%; height: auto; }
+  .media[data-fig] { padding: 20px; }
+  .w-md { max-width: 780px; margin-left: auto; margin-right: auto; }
+  .w-sm { max-width: 620px; margin-left: auto; margin-right: auto; }
   figure { margin: 0; }
   figcaption { font-size: 0.93rem; color: var(--muted); margin-top: 12px; text-align: center; max-width: 820px; margin-left: auto; margin-right: auto; }
   .placeholder {
@@ -135,10 +138,10 @@
     <p class="authors"><span>Maria T. Tagliaferri</span><span>Inseung Kang</span></p>
     <p class="affil">Department of Mechanical Engineering, Carnegie Mellon University</p>
     <nav class="links" aria-label="Paper links">
-      <!-- TODO: replace each "soon" button with a real link, e.g.
-           <a class="btn" href="static/paper.pdf">Paper</a> -->
-      <span class="btn soon">Paper <small>coming soon</small></span>
-      <span class="btn soon">arXiv <small>coming soon</small></span>
+      <!-- TODO: replace the Code button with a real link when the repository is public, e.g.
+           <a class="btn" href="https://github.com/...">Code</a> -->
+      <a class="btn" href="https://arxiv.org/pdf/2611.25480">Paper</a>
+      <a class="btn" href="https://arxiv.org/abs/2611.25480">arXiv</a>
       <span class="btn soon">Code <small>coming soon</small></span>
       <a class="btn" href="#videos">Videos</a>
       <a class="btn" href="#bibtex">BibTeX</a>
@@ -169,7 +172,7 @@
     <h2>Simulation-to-real framework</h2>
     <p class="lede">A virtual human learns to respond to perturbations like a real one, then an exoskeleton policy learns to help it, and that policy runs directly on the device.</p>
     <figure>
-      <div class="media" data-fig="static/images/fig1_framework.png" data-alt="Overview of the simulation-to-real framework"></div>
+      <div class="media w-md" data-fig="static/images/fig1_framework.png" data-alt="Overview of the simulation-to-real framework"></div>
       <figcaption>Overview of the framework. (A) Stage 1: training the human policy to reproduce recorded responses to backward-translation perturbations. (B) Stage 2: training the exoskeleton controller to reduce center-of-mass excursion and increase the balance threshold of the simulated human. (C) Deployment on the ankle exoskeleton using on-board sensor inputs.</figcaption>
     </figure>
     <div class="steps">
@@ -209,6 +212,10 @@
   <div class="wrap">
     <h2>On hardware</h2>
     <p class="lede">The same perturbation magnitude with the exoskeleton off and on. The measured right-side exoskeleton torque is time-aligned with the video.</p>
+    <figure style="margin-bottom:44px">
+      <div class="media w-sm" data-fig="static/images/fig2_experiment.png" data-alt="Experimental protocol"></div>
+      <figcaption>Experimental protocol. (A) Participants wore a bilateral ankle exoskeleton on a force-instrumented treadmill and experienced backward-translation perturbations. (B) Treadmill perturbation profiles and target belt displacements for a representative participant. (C) Perturbation levels selected by the QUEST adaptive algorithm, and the resulting balance thresholds, for a representative participant.</figcaption>
+    </figure>
     <div class="tabs" role="tablist" aria-label="Perturbation magnitude">
       <button class="tab" role="tab" aria-selected="true" data-src="static/videos/hardware_20p5cm.mp4">20.5 cm</button>
       <button class="tab" role="tab" aria-selected="false" data-src="static/videos/hardware_23p2cm.mp4">23.2 cm</button>
@@ -250,12 +257,13 @@
   <div class="wrap narrow">
     <h2>BibTeX</h2>
     <div class="copyrow"><button class="copy" type="button" id="copybib">Copy</button></div>
-    <!-- TODO: update the entry type, venue and year once the paper is published -->
-<pre id="bib">@misc{tagliaferri2026ankleexo,
-  title  = {Learning Ankle Exoskeleton Control for Reactive Standing Balance
-            Through Neuromusculoskeletal Simulation},
-  author = {Tagliaferri, Maria T. and Kang, Inseung},
-  year   = {2026}
+    <!-- TODO: update the entry once the paper is published in a venue -->
+<pre id="bib">@article{tagliaferri2026ankleexo,
+  title   = {Learning Ankle Exoskeleton Control for Reactive Standing Balance
+             Through Neuromusculoskeletal Simulation},
+  author  = {Tagliaferri, Maria T. and Kang, Inseung},
+  journal = {arXiv preprint arXiv:2611.25480},
+  year    = {2026}
 }</pre>
   </div>
 </section>
