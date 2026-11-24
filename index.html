@@ -115,9 +115,11 @@
   .phasenav b { display: block; color: var(--ink); font-size: 1.05rem; }
   .phasenav a > span:last-child { font-size: 0.92rem; color: var(--muted); }
   .discussion h3 { text-align: center; font-size: 1.25rem; margin-bottom: 14px; }
+  .w-lg { max-width: 900px; margin-left: auto; margin-right: auto; }
   .split { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 44px; align-items: center; margin-top: 28px; }
   .split .text p:last-child { margin-bottom: 0; }
   .split figure { margin: 0; }
+  .split figure.fig-compact { max-width: 500px; margin-left: auto; margin-right: auto; }
   @media (max-width: 980px) { .split { grid-template-columns: 1fr; gap: 28px; } }
   .figgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
   .stack > * + * { margin-top: 40px; }
@@ -240,16 +242,17 @@
   <div class="wrap">
     <p class="phase">Phase 3</p>
     <h2>Transfer to hardware</h2>
-    <div class="narrow">
+    <div class="split">
+      <div class="text">
       <p>The trained policy was deployed on-board a bilateral ankle exoskeleton and used only on-board inertial sensor measurements, without explicit perturbation detection or subject-specific tuning. It was evaluated in five healthy participants whose data were not used for training. Each participant's balance threshold was measured with and without exoskeleton assistance.</p>
-    </div>
-    <div class="stack" style="margin-top:32px">
-      <figure>
-        <div class="media w-sm" data-fig="static/images/fig2_experiment.png" data-alt="Experimental protocol"></div>
+      </div>
+      <figure class="fig-compact">
+        <div class="media" data-fig="static/images/fig2_experiment.png" data-alt="Experimental protocol"></div>
         <figcaption><strong>Experimental protocol.</strong> (A) Participants wore a bilateral ankle exoskeleton on a force-instrumented treadmill and experienced backward-translation perturbations. (B) Treadmill perturbation profiles and target belt displacements for a representative participant. (C) Perturbation levels selected by the QUEST adaptive algorithm, and the resulting balance thresholds, for a representative participant.</figcaption>
       </figure>
-
-      <div>
+    </div>
+    <div class="stack" style="margin-top:48px">
+      <div class="w-lg">
         <h3 class="sub">Balance response with and without exoskeleton assistance</h3>
         <p class="lede">The subject experienced the same perturbation magnitude with and without exoskeleton assistance. The exoskeleton torque profile is shown in blue.</p>
         <div class="tabs" role="tablist" aria-label="Perturbation magnitude">
