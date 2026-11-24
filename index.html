@@ -165,9 +165,9 @@
       <p>We implemented the controller on-board a bilateral ankle exoskeleton and evaluated it in five healthy subjects whose data were not used for training. Assistance increased the perturbation magnitude that subjects could withstand without stepping by 11.8% and reduced peak center-of-mass displacement and velocity by 13.5% and 28.2%, respectively. Individual benefits varied with baseline recovery strategy and body mass. These results indicate that a single virtual human can yield transferable balance assistance, and that more diverse virtual humans could further improve its effectiveness.</p>
     </div>
     <div class="stats">
-      <div class="stat"><b>+11.8%</b><span>increase in stadning balance with simulation-learned exo assistance</span></div>
+      <div class="stat"><b>+11.8%</b><span>higher balance threshold with assistance (2.8 ± 1.7 cm of belt translation)</span></div>
       <div class="stat"><b>&minus;13.5%</b><span>peak forward center-of-mass displacement</span></div>
-      <div class="stat"><b>&minus;28.2%</b><span>peak center-of-mass velocity </span></div>
+      <div class="stat"><b>&minus;28.2%</b><span>peak center-of-mass velocity</span></div>
     </div>
   </div>
 </section>
@@ -199,6 +199,12 @@
     <figure style="margin-top:32px">
       <div class="media" data-fig="static/images/fig3_imitation.png" data-alt="Motion-tracking performance of the human policy"></div>
       <figcaption><strong>Tracking performance.</strong> Simulated and recorded ankle angle and ankle moment for a small perturbation and for two trials of the same larger perturbation. Across all magnitudes the model tracked joint angles with an RMSE of 0.6 ± 0.2° and joint moments with 0.07 ± 0.04 Nm/kg, capturing trial-to-trial variability in the response.</figcaption>
+    </figure>
+    <figure style="margin-top:40px">
+      <div class="media w-md">
+        <video controls muted loop playsinline preload="metadata" src="static/videos/imitation_overlay.mp4"></video>
+      </div>
+      <figcaption><strong>Simulation overlaid on the reference.</strong> The reference motion (green) with the simulated muscle-driven model on top, for four trials: 6 cm, 15 cm, and two different trials of the same 20 cm backward perturbation. The joint angle RMSE for each trial, averaged across the hip, knee, ankle and lumbar joints, is shown in the video.</figcaption>
     </figure>
   </div>
 </section>
