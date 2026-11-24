@@ -18,7 +18,7 @@
     --accent: #1d8fd1;
     --accent-dark: #146a9c;
     --alert: #dc2626;
-    --maxw: 1040px;
+    --maxw: 1200px;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -115,6 +115,10 @@
   .phasenav b { display: block; color: var(--ink); font-size: 1.05rem; }
   .phasenav a > span:last-child { font-size: 0.92rem; color: var(--muted); }
   .discussion h3 { text-align: center; font-size: 1.25rem; margin-bottom: 14px; }
+  .split { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 44px; align-items: center; margin-top: 28px; }
+  .split .text p:last-child { margin-bottom: 0; }
+  .split figure { margin: 0; }
+  @media (max-width: 980px) { .split { grid-template-columns: 1fr; gap: 28px; } }
   .figgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
   .stack > * + * { margin-top: 40px; }
 
@@ -194,16 +198,18 @@
   <div class="wrap">
     <p class="phase">Phase 1</p>
     <h2>Motion imitation in neuromusculoskeletal simulation</h2>
-    <div class="narrow">
-      <p>We first developed a virtual human capable of reproducing balance responses to backward-translation perturbations through motion imitation. A 10-degree-of-freedom musculoskeletal model with 18 muscles was trained using Soft Actor&ndash;Critic to track approximately 2 minutes of motion-capture data from a single subject.</p>
-      <p>The policy was rewarded for tracking recorded joint angles and joint moments, with additional terms that encouraged recovery toward the reference following large perturbation-induced deviations. It received no explicit information about perturbation onset, duration, or direction.</p>
-    </div>
-    <figure style="margin-top:32px">
-      <div class="media w-md">
-        <video controls muted loop playsinline preload="metadata" src="static/videos/imitation_overlay.mp4"></video>
+    <div class="split">
+      <div class="text">
+        <p>We first developed a virtual human capable of reproducing balance responses to backward-translation perturbations through motion imitation. A 10-degree-of-freedom musculoskeletal model with 18 muscles was trained using Soft Actor&ndash;Critic to track approximately 2 minutes of motion-capture data from a single subject.</p>
+        <p>The policy was rewarded for tracking recorded joint angles and joint moments, with additional terms that encouraged recovery toward the reference following large perturbation-induced deviations. It received no explicit information about perturbation onset, duration, or direction.</p>
       </div>
-      <figcaption><strong>Simulation overlaid on reference data.</strong> Reference motion (green) and the simulated muscle-driven model overlaid for four trials: 6 cm, 15 cm, and two trials of the same 20 cm backward perturbation (to capture subject variability). The video displays the joint angle RMSE for each trial, averaged across the hip, knee, ankle, and lumbar joints.</figcaption>
-    </figure>
+      <figure>
+        <div class="media">
+          <video controls muted loop playsinline preload="metadata" src="static/videos/imitation_overlay.mp4"></video>
+      </div>
+        <figcaption><strong>Simulation overlaid on reference data.</strong> Reference motion (green) and the simulated muscle-driven model overlaid for four trials: 6 cm, 15 cm, and two trials of the same 20 cm backward perturbation (to capture subject variability). The video displays the joint angle RMSE for each trial, averaged across the hip, knee, ankle, and lumbar joints.</figcaption>
+      </figure>
+    </div>
     <figure style="margin-top:40px">
       <div class="media w-md" data-fig="static/images/fig3_imitation.png" data-alt="Motion-tracking performance of the human policy"></div>
       <figcaption><strong>Tracking performance.</strong> Simulated and recorded ankle angle and ankle moment for a small perturbation and for two trials of the same larger perturbation. Across all magnitudes the model tracked joint angles with an RMSE of 0.6 ± 0.2° and joint moments with 0.07 ± 0.04 Nm/kg, capturing trial-to-trial variability in the response.</figcaption>
@@ -215,16 +221,18 @@
   <div class="wrap">
     <p class="phase">Phase 2</p>
     <h2>Training the exoskeleton policy</h2>
-    <div class="narrow">
+    <div class="split" id="videos">
+      <div class="text">
       <p>With the human policy frozen, an ankle exoskeleton was added to the model, and a second policy was trained to provide assistance. The exoskeleton policy used only signals available to the physical device: a 200 ms history of shank and foot angular velocities and its previous torque commands. It output a single bilateral torque command, with a maximum magnitude of 16 Nm.</p>
       <p>The policy was rewarded for avoiding steps and reducing center-of-mass displacement and velocity during perturbation recovery. It received no explicit perturbation detection signal, and no assistance onset, timing, or magnitude was prescribed. Instead, the policy learned when and how much to assist, generating plantarflexion torque that peaked before the biological ankle-moment response and increased the simulated balance threshold by 4%.</p>
-    </div>
-    <figure id="videos" style="margin-top:32px">
-      <div class="media">
-        <video controls muted loop playsinline autoplay preload="metadata" src="static/videos/simulation_23p2cm.mp4"></video>
       </div>
-      <figcaption><strong>Simulated response with and without assistance.</strong> The same 23.2 cm backward belt translation in simulation. Left: simulated human without exoskeleton assistance. Right: simulated human with the learned exoskeleton policy. The corresponding exoskeleton torque, after application of the device torque limiter, is shown below.</figcaption>
-    </figure>
+      <figure>
+        <div class="media">
+          <video controls muted loop playsinline autoplay preload="metadata" src="static/videos/simulation_23p2cm.mp4"></video>
+      </div>
+        <figcaption><strong>Simulated response with and without assistance.</strong> The same 23.2 cm backward belt translation in simulation. Left: simulated human without exoskeleton assistance. Right: simulated human with the learned exoskeleton policy. The corresponding exoskeleton torque, after application of the device torque limiter, is shown below.</figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
