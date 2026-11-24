@@ -168,7 +168,7 @@
     </div>
     <div class="stats">
       <div class="stat"><b>+11.8%</b><span>increase in standing balance with simulation-learned exoskeleton assistance</span></div>
-      <div class="stat"><b>&minus;13.5%</b><span>peak forward center-of-mass with simulation-learned exoskeleton assistance</span></div>
+      <div class="stat"><b>&minus;13.5%</b><span>peak forward center-of-mass displacement with simulation-learned exoskeleton assistance</span></div>
       <div class="stat"><b>&minus;28.2%</b><span>peak center-of-mass velocity with simulation-learned exoskeleton assistance</span></div>
     </div>
   </div>
@@ -177,13 +177,13 @@
 <section id="overview" class="alt">
   <div class="wrap">
     <h2>Simulation-to-real framework</h2>
-    <p class="lede">A virtual human is trained to reproduce human responses to balance perturbations. An exoskeleton policy then learns to assist its recovery and is deployed directly on the physical device.</p>
+    <p class="lede">A virtual human was trained to reproduce human responses to balance perturbations. An exoskeleton policy then learned to assist its recovery and was deployed directly on the physical device.</p>
     <figure>
       <div class="media w-md" data-fig="static/images/fig1_framework.png" data-alt="Overview of the simulation-to-real framework"></div>
-      <figcaption>Overview of the framework. (A) Phase 1: training the human policy to reproduce recorded responses to backward-translation perturbations. (B) Phase 2: training the exoskeleton controller to reduce center-of-mass excursion and increase the balance threshold of the simulated human. (C) Phase 3: deployment on the ankle exoskeleton using on-board sensor inputs.</figcaption>
+      <figcaption><strong>Framework overview.</strong> (A) Phase 1: training the human policy to reproduce recorded responses to backward-translation perturbations. (B) Phase 2: training the exoskeleton controller to reduce center-of-mass excursion and increase the balance threshold of the simulated human. (C) Phase 3: deployment on the ankle exoskeleton using on-board sensor inputs.</figcaption>
     </figure>
     <nav class="phasenav" aria-label="Phases">
-      <a href="#phase1"><span class="tag">Phase 1</span><b>Imitation learning</b><span>A virtual human that responds like a real one</span></a>
+      <a href="#phase1"><span class="tag">Phase 1</span><b>Motion imitation</b><span>A virtual human that responds like a real one</span></a>
       <a href="#phase2"><span class="tag">Phase 2</span><b>Exoskeleton policy</b><span>Learning assistance in simulation</span></a>
       <a href="#phase3"><span class="tag">Phase 3</span><b>Transfer to hardware</b><span>Running the policy on the device</span></a>
     </nav>
@@ -193,16 +193,16 @@
 <section id="phase1">
   <div class="wrap">
     <p class="phase">Phase 1</p>
-    <h2>Motion Imitation in Neuromusculoskeletal Simulation</h2>
+    <h2>Motion imitation in neuromusculoskeletal simulation</h2>
     <div class="narrow">
       <p>We first developed a virtual human capable of reproducing balance responses to backward-translation perturbations through motion imitation. A 10-degree-of-freedom musculoskeletal model with 18 muscles was trained using Soft Actor&ndash;Critic to track approximately 2 minutes of motion-capture data from a single subject.</p>
-      <p>The policy is rewarded for tracking recorded joint angles and joint moments, with additional terms that encourage recovery toward the reference following large perturbation-induced deviations. It receives no explicit information about perturbation onset, duration, or direction.</p>
+      <p>The policy was rewarded for tracking recorded joint angles and joint moments, with additional terms that encouraged recovery toward the reference following large perturbation-induced deviations. It received no explicit information about perturbation onset, duration, or direction.</p>
     </div>
     <figure style="margin-top:32px">
       <div class="media w-md">
         <video controls muted loop playsinline preload="metadata" src="static/videos/imitation_overlay.mp4"></video>
       </div>
-      <figcaption><strong>Simulation overlaid on reference data. Reference motion (green) and the simulated muscle-driven model overlaid for four trials: 6 cm, 15 cm, and two trials of the same 20 cm backward perturbation (to capture subject variability). The video displays the joint angle RMSE for each trial, averaged across the hip, knee, ankle, and lumbar joints.</figcaption>
+      <figcaption><strong>Simulation overlaid on reference data.</strong> Reference motion (green) and the simulated muscle-driven model overlaid for four trials: 6 cm, 15 cm, and two trials of the same 20 cm backward perturbation (to capture subject variability). The video displays the joint angle RMSE for each trial, averaged across the hip, knee, ankle, and lumbar joints.</figcaption>
     </figure>
     <figure style="margin-top:40px">
       <div class="media w-md" data-fig="static/images/fig3_imitation.png" data-alt="Motion-tracking performance of the human policy"></div>
@@ -216,14 +216,14 @@
     <p class="phase">Phase 2</p>
     <h2>Training the exoskeleton policy</h2>
     <div class="narrow">
-      <p>With the human policy frozen, an ankle exoskeleton is added to the model, and a second policy is trained to provide assistance. The exoskeleton policy uses only signals available to the physical device: a 200 ms history of shank and foot angular velocities and its previous torque commands. It outputs a single bilateral torque command, with a maximum magnitude of 16 Nm.</p>
-      <p>The policy is rewarded for avoiding steps and reducing center-of-mass displacement and velocity during perturbation recovery. It receives no explicit perturbation detection signal, and no assistance onset, timing, or magnitude is prescribed. Instead, the policy learns when and how much to assist, generating plantarflexion torque that peaks before the biological ankle-moment response and increases the simulated balance threshold by 4%.</p>
+      <p>With the human policy frozen, an ankle exoskeleton was added to the model, and a second policy was trained to provide assistance. The exoskeleton policy used only signals available to the physical device: a 200 ms history of shank and foot angular velocities and its previous torque commands. It output a single bilateral torque command, with a maximum magnitude of 16 Nm.</p>
+      <p>The policy was rewarded for avoiding steps and reducing center-of-mass displacement and velocity during perturbation recovery. It received no explicit perturbation detection signal, and no assistance onset, timing, or magnitude was prescribed. Instead, the policy learned when and how much to assist, generating plantarflexion torque that peaked before the biological ankle-moment response and increased the simulated balance threshold by 4%.</p>
     </div>
     <figure id="videos" style="margin-top:32px">
       <div class="media">
         <video controls muted loop playsinline autoplay preload="metadata" src="static/videos/simulation_23p2cm.mp4"></video>
       </div>
-      <figcaption>The same 23.2 cm backward belt translation in simulation. Left: simulated human without exoskeleton assistance. Right: simulated human with the learned exoskeleton policy. The corresponding exoskeleton torque, after application of the device torque limiter, is shown below.</figcaption>
+      <figcaption><strong>Simulated response with and without assistance.</strong> The same 23.2 cm backward belt translation in simulation. Left: simulated human without exoskeleton assistance. Right: simulated human with the learned exoskeleton policy. The corresponding exoskeleton torque, after application of the device torque limiter, is shown below.</figcaption>
     </figure>
   </div>
 </section>
@@ -233,7 +233,7 @@
     <p class="phase">Phase 3</p>
     <h2>Transfer to hardware</h2>
     <div class="narrow">
-      <p>The trained policy was deployed onboard a bilateral ankle exoskeleton and used only onboard inertial sensor measurements, without explicit perturbation detection or subject-specific tuning. It was evaluated in five healthy participants whose data were not used for training. Each participant's balance threshold was measured with and without exoskeleton assistance.</p>
+      <p>The trained policy was deployed on-board a bilateral ankle exoskeleton and used only on-board inertial sensor measurements, without explicit perturbation detection or subject-specific tuning. It was evaluated in five healthy participants whose data were not used for training. Each participant's balance threshold was measured with and without exoskeleton assistance.</p>
     </div>
     <div class="stack" style="margin-top:32px">
       <figure>
@@ -242,8 +242,8 @@
       </figure>
 
       <div>
-        <h3 class="sub">Balance responce with and without exoskeleton assistance</h3>
-        <p class="lede">The subject experiences the same perturbation magnitude with and without exoskeleton assistance. Exoskeleton torque profile shown in blue.</p>
+        <h3 class="sub">Balance response with and without exoskeleton assistance</h3>
+        <p class="lede">The subject experienced the same perturbation magnitude with and without exoskeleton assistance. The exoskeleton torque profile is shown in blue.</p>
         <div class="tabs" role="tablist" aria-label="Perturbation magnitude">
           <button class="tab" role="tab" aria-selected="true" data-src="static/videos/hardware_20p5cm.mp4">20.5 cm</button>
           <button class="tab" role="tab" aria-selected="false" data-src="static/videos/hardware_23p2cm.mp4">23.2 cm</button>
@@ -253,7 +253,7 @@
           <div class="media">
             <video id="hwvideo" controls muted loop playsinline preload="metadata" src="static/videos/hardware_20p5cm.mp4"></video>
           </div>
-          <figcaption>Left: exoskeleton off (zero commanded torque). Right: exoskeleton on with the simulation-trained controller. Videos are synchronized at perturbation onset and play once in real time, then at 0.25&times; speed.</figcaption>
+          <figcaption><strong>Hardware response with and without assistance.</strong> Left: exoskeleton off (zero commanded torque). Right: exoskeleton on with the simulation-trained controller. Videos are synchronized at perturbation onset and play once in real time, then at 0.25&times; speed.</figcaption>
         </figure>
       </div>
     </div>
