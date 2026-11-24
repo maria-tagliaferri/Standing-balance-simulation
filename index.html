@@ -167,9 +167,9 @@
       <p>We implemented the controller on-board a bilateral ankle exoskeleton and evaluated it in five healthy subjects whose data were not used for training. Assistance increased the perturbation magnitude that subjects could withstand without stepping by 11.8% and reduced peak center-of-mass displacement and velocity by 13.5% and 28.2%, respectively. Individual benefits varied with baseline recovery strategy and body mass. These results indicate that a single virtual human can yield transferable balance assistance, and that more diverse virtual humans could further improve its effectiveness.</p>
     </div>
     <div class="stats">
-      <div class="stat"><b>+11.8%</b><span>higher balance threshold with assistance (2.8 ± 1.7 cm of belt translation)</span></div>
-      <div class="stat"><b>&minus;13.5%</b><span>peak forward center-of-mass displacement</span></div>
-      <div class="stat"><b>&minus;28.2%</b><span>peak center-of-mass velocity</span></div>
+      <div class="stat"><b>+11.8%</b><span>increase in standing balance with simulation-learned exoskeleton assistance</span></div>
+      <div class="stat"><b>&minus;13.5%</b><span>peak forward center-of-mass with simulation-learned exoskeleton assistance</span></div>
+      <div class="stat"><b>&minus;28.2%</b><span>peak center-of-mass velocity with simulation-learned exoskeleton assistance</span></div>
     </div>
   </div>
 </section>
@@ -193,16 +193,16 @@
 <section id="phase1">
   <div class="wrap">
     <p class="phase">Phase 1</p>
-    <h2>Imitation learning of the balance response</h2>
+    <h2>Motion Imitation in Neuromusculoskeletal Simulation</h2>
     <div class="narrow">
-      <p>We first build a virtual human that reacts to perturbations the way a person does. A muscle-driven musculoskeletal model with 10 degrees of freedom and 18 muscles is trained with Soft Actor&ndash;Critic to track about 2 minutes of motion-capture data from a single subject: 24 standing trials with backward belt translations from 2 cm up to that subject's 20 cm balance threshold.</p>
-      <p>The policy is rewarded for matching recorded joint angles and joint moments, with penalties that keep it tracking the recovery even when a perturbation pushes it far from the reference. It is never told when a perturbation starts, how long it lasts, or in which direction it acts.</p>
+      <p>We first developed a virtual human capable of reproducing balance responses to backward-translation perturbations through motion imitation. A 10-degree-of-freedom musculoskeletal model with 18 muscles was trained using Soft Actor&ndash;Critic to track approximately 2 minutes of motion-capture data from a single subject.</p>
+      <p>The policy is rewarded for tracking recorded joint angles and joint moments, with additional terms that encourage recovery toward the reference following large perturbation-induced deviations. It receives no explicit information about perturbation onset, duration, or direction.</p>
     </div>
     <figure style="margin-top:32px">
       <div class="media w-md">
         <video controls muted loop playsinline preload="metadata" src="static/videos/imitation_overlay.mp4"></video>
       </div>
-      <figcaption><strong>Simulation overlaid on the reference.</strong> The reference motion (green) with the simulated muscle-driven model on top, for four trials: 6 cm, 15 cm, and two different trials of the same 20 cm backward perturbation. The joint angle RMSE for each trial, averaged across the hip, knee, ankle and lumbar joints, is shown in the video.</figcaption>
+      <figcaption><strong>Simulation overlaid on reference data. Reference motion (green) and the simulated muscle-driven model overlaid for four trials: 6 cm, 15 cm, and two trials of the same 20 cm backward perturbation. The video displays the joint angle RMSE for each trial, averaged across the hip, knee, ankle, and lumbar joints.</figcaption>
     </figure>
     <figure style="margin-top:40px">
       <div class="media w-md" data-fig="static/images/fig3_imitation.png" data-alt="Motion-tracking performance of the human policy"></div>
@@ -216,14 +216,14 @@
     <p class="phase">Phase 2</p>
     <h2>Training the exoskeleton policy</h2>
     <div class="narrow">
-      <p>With the human policy frozen, an ankle exoskeleton is added to the model and a second policy learns to assist it. The exoskeleton policy sees only what the real device can measure: a 200 ms history of shank and foot angular velocity and its own previous torque command. It outputs a single torque command shared by both ankles, limited to 16 Nm.</p>
-      <p>The reward penalizes stepping, center-of-mass displacement and velocity during recovery, and unnecessary torque. No assistance onset, timing, or magnitude is prescribed. In simulation the policy learned plantarflexion assistance that peaked before the ankle moment response, raising the simulated balance threshold by 4%.</p>
+      <p>With the human policy frozen, an ankle exoskeleton is added to the model, and a second policy is trained to provide assistance. The exoskeleton policy uses only signals available to the physical device: a 200 ms history of shank and foot angular velocities and its previous torque commands. It outputs a single bilateral torque command, with a maximum magnitude of 16 Nm.</p>
+      <p>The policy is rewarded for avoiding steps and reducing center-of-mass displacement and velocity during perturbation recovery. It receives no explicit perturbation detection signal, and no assistance onset, timing, or magnitude is prescribed. Instead, the policy learns when and how much to assist, generating plantarflexion torque that peaks before the biological ankle-moment response and increases the simulated balance threshold by 4%.</p>
     </div>
     <figure id="videos" style="margin-top:32px">
       <div class="media">
         <video controls muted loop playsinline autoplay preload="metadata" src="static/videos/simulation_23p2cm.mp4"></video>
       </div>
-      <figcaption>The same 23.2 cm backward belt translation in simulation. Left: simulated human without the exoskeleton. Right: with the learned exoskeleton policy, with its torque, after the device's limiter, shown underneath.</figcaption>
+      <figcaption>The same 23.2 cm backward belt translation in simulation. Left: simulated human without exoskeleton assistance. Right: simulated human with the learned exoskeleton policy. The corresponding exoskeleton torque, after application of the device torque limiter, is shown below.</figcaption>
     </figure>
   </div>
 </section>
@@ -233,7 +233,7 @@
     <p class="phase">Phase 3</p>
     <h2>Transfer to hardware</h2>
     <div class="narrow">
-      <p>The trained policy runs on-board a bilateral ankle exoskeleton using only its inertial sensors, with no perturbation detection and no subject-specific tuning. We evaluated it in five healthy participants whose data were not used for training, estimating each person's balance threshold with and without assistance.</p>
+      <p>The trained policy was deployed onboard a bilateral ankle exoskeleton and used only onboard inertial sensor measurements, without explicit perturbation detection or subject-specific tuning. It was evaluated in five healthy participants whose data were not used for training. Each participant's balance threshold was measured with and without exoskeleton assistance.</p>
     </div>
     <div class="stack" style="margin-top:32px">
       <figure>
@@ -242,8 +242,8 @@
       </figure>
 
       <div>
-        <h3 class="sub">Exoskeleton off vs. on</h3>
-        <p class="lede">The same perturbation magnitude with the exoskeleton off and on. The measured right-side exoskeleton torque is time-aligned with the video.</p>
+        <h3 class="sub">Balance responce with adn without exoskeleton assistance</h3>
+        <p class="lede">The subject experiences the same perturbation magnitude with and without exoskeleton assistance. Exoskeleton torque profile shown in blue.</p>
         <div class="tabs" role="tablist" aria-label="Perturbation magnitude">
           <button class="tab" role="tab" aria-selected="true" data-src="static/videos/hardware_20p5cm.mp4">20.5 cm</button>
           <button class="tab" role="tab" aria-selected="false" data-src="static/videos/hardware_23p2cm.mp4">23.2 cm</button>
