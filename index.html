@@ -106,6 +106,14 @@
   .step .tag { display: inline-block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 8px; }
   .step p { font-size: 0.96rem; margin: 0; }
 
+  .phase { text-align: center; margin: 0 0 6px; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-dark); }
+  h3.sub { text-align: center; font-size: 1.25rem; margin-bottom: 10px; }
+  .phasenav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+  .phasenav a { display: block; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; text-decoration: none; color: var(--body); transition: border-color 0.15s; }
+  .phasenav a:hover { border-color: var(--accent); }
+  .phasenav .tag { display: block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 4px; }
+  .phasenav b { display: block; color: var(--ink); font-size: 1.05rem; }
+  .phasenav a > span:last-child { font-size: 0.92rem; color: var(--muted); }
   .figgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
   .stack > * + * { margin-top: 40px; }
 
@@ -126,7 +134,7 @@
     body { font-size: 16px; }
     header.hero { padding: 48px 0 32px; }
     section { padding: 40px 0; }
-    .stats, .steps, .figgrid { grid-template-columns: 1fr; }
+    .stats, .steps, .figgrid, .phasenav { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -164,82 +172,92 @@
   </div>
 </section>
 
-<section id="method" class="alt">
+<section id="overview" class="alt">
   <div class="wrap">
     <h2>Simulation-to-real framework</h2>
     <p class="lede">A virtual human learns to respond to perturbations like a real one, then an exoskeleton policy learns to help it, and that policy runs directly on the device.</p>
     <figure>
       <div class="media w-md" data-fig="static/images/fig1_framework.png" data-alt="Overview of the simulation-to-real framework"></div>
-      <figcaption>Overview of the framework. (A) Stage 1: training the human policy to reproduce recorded responses to backward-translation perturbations. (B) Stage 2: training the exoskeleton controller to reduce center-of-mass excursion and increase the balance threshold of the simulated human. (C) Deployment on the ankle exoskeleton using on-board sensor inputs.</figcaption>
+      <figcaption>Overview of the framework. (A) Phase 1: training the human policy to reproduce recorded responses to backward-translation perturbations. (B) Phase 2: training the exoskeleton controller to reduce center-of-mass excursion and increase the balance threshold of the simulated human. (C) Phase 3: deployment on the ankle exoskeleton using on-board sensor inputs.</figcaption>
     </figure>
-    <div class="steps">
-      <div class="step">
-        <span class="tag">Stage 1</span>
-        <h3>Motion imitation</h3>
-        <p>A muscle-driven model with 18 muscles is trained with Soft Actor&ndash;Critic to track about 2 minutes of motion-capture data from one subject, reproducing joint angles and moments during backward belt translations.</p>
-      </div>
-      <div class="step">
-        <span class="tag">Stage 2</span>
-        <h3>Exoskeleton policy</h3>
-        <p>With the human policy frozen, an exoskeleton policy learns ankle torque from a 200 ms history of shank and foot angular velocity. Timing and magnitude are not prescribed; they emerge from a stability-focused reward.</p>
-      </div>
-      <div class="step">
-        <span class="tag">Deployment</span>
-        <h3>On-board control</h3>
-        <p>The policy runs on a bilateral ankle exoskeleton (up to 16 Nm) using only its inertial sensors, with no perturbation detection and no subject-specific tuning.</p>
-      </div>
-    </div>
+    <nav class="phasenav" aria-label="Phases">
+      <a href="#phase1"><span class="tag">Phase 1</span><b>Imitation learning</b><span>A virtual human that responds like a real one</span></a>
+      <a href="#phase2"><span class="tag">Phase 2</span><b>Exoskeleton policy</b><span>Learning assistance in simulation</span></a>
+      <a href="#phase3"><span class="tag">Phase 3</span><b>Transfer to hardware</b><span>Running the policy on the device</span></a>
+    </nav>
   </div>
 </section>
 
-<section id="videos">
+<section id="phase1">
   <div class="wrap">
-    <h2>In simulation</h2>
-    <p class="lede">The same 23.2 cm backward belt translation, with and without the learned policy. The exoskeleton torque is shown underneath, synchronized to the animation.</p>
-    <figure>
+    <p class="phase">Phase 1</p>
+    <h2>Imitation learning of the balance response</h2>
+    <div class="narrow">
+      <p>We first build a virtual human that reacts to perturbations the way a person does. A muscle-driven musculoskeletal model with 10 degrees of freedom and 18 muscles is trained with Soft Actor&ndash;Critic to track about 2 minutes of motion-capture data from a single subject: 24 standing trials with backward belt translations from 2 cm up to that subject's 20 cm balance threshold.</p>
+      <p>The policy is rewarded for matching recorded joint angles and joint moments, with penalties that keep it tracking the recovery even when a perturbation pushes it far from the reference. It is never told when a perturbation starts, how long it lasts, or in which direction it acts.</p>
+    </div>
+    <figure style="margin-top:32px">
+      <div class="media" data-fig="static/images/fig3_imitation.png" data-alt="Motion-tracking performance of the human policy"></div>
+      <figcaption><strong>Tracking performance.</strong> Simulated and recorded ankle angle and ankle moment for a small perturbation and for two trials of the same larger perturbation. Across all magnitudes the model tracked joint angles with an RMSE of 0.6 ± 0.2° and joint moments with 0.07 ± 0.04 Nm/kg, capturing trial-to-trial variability in the response.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="phase2" class="alt">
+  <div class="wrap">
+    <p class="phase">Phase 2</p>
+    <h2>Training the exoskeleton policy</h2>
+    <div class="narrow">
+      <p>With the human policy frozen, an ankle exoskeleton is added to the model and a second policy learns to assist it. The exoskeleton policy sees only what the real device can measure: a 200 ms history of shank and foot angular velocity and its own previous torque command. It outputs a single torque command shared by both ankles, limited to 16 Nm.</p>
+      <p>The reward penalizes stepping, center-of-mass displacement and velocity during recovery, and unnecessary torque. No assistance onset, timing, or magnitude is prescribed. In simulation the policy learned plantarflexion assistance that peaked before the ankle moment response, raising the simulated balance threshold by 4%.</p>
+    </div>
+    <figure id="videos" style="margin-top:32px">
       <div class="media">
         <video controls muted loop playsinline autoplay preload="metadata" src="static/videos/simulation_23p2cm.mp4"></video>
       </div>
-      <figcaption>Left: simulated human without the exoskeleton. Right: with the learned exoskeleton policy. Each clip plays once in real time and then at 0.25&times; speed.</figcaption>
+      <figcaption>The same 23.2 cm backward belt translation in simulation. Left: simulated human without the exoskeleton. Right: with the learned exoskeleton policy, with its torque shown underneath. Each clip plays once in real time and then at 0.25&times; speed.</figcaption>
     </figure>
   </div>
 </section>
 
-<section id="hardware" class="alt">
+<section id="phase3">
   <div class="wrap">
-    <h2>On hardware</h2>
-    <p class="lede">The same perturbation magnitude with the exoskeleton off and on. The measured right-side exoskeleton torque is time-aligned with the video.</p>
-    <figure style="margin-bottom:44px">
-      <div class="media w-sm" data-fig="static/images/fig2_experiment.png" data-alt="Experimental protocol"></div>
-      <figcaption>Experimental protocol. (A) Participants wore a bilateral ankle exoskeleton on a force-instrumented treadmill and experienced backward-translation perturbations. (B) Treadmill perturbation profiles and target belt displacements for a representative participant. (C) Perturbation levels selected by the QUEST adaptive algorithm, and the resulting balance thresholds, for a representative participant.</figcaption>
-    </figure>
-    <div class="tabs" role="tablist" aria-label="Perturbation magnitude">
-      <button class="tab" role="tab" aria-selected="true" data-src="static/videos/hardware_20p5cm.mp4">20.5 cm</button>
-      <button class="tab" role="tab" aria-selected="false" data-src="static/videos/hardware_23p2cm.mp4">23.2 cm</button>
-      <button class="tab" role="tab" aria-selected="false" data-src="static/videos/hardware_26p2cm.mp4">26.2 cm</button>
+    <p class="phase">Phase 3</p>
+    <h2>Transfer to hardware</h2>
+    <div class="narrow">
+      <p>The trained policy runs on-board a bilateral ankle exoskeleton using only its inertial sensors, with no perturbation detection and no subject-specific tuning. We evaluated it in five healthy participants whose data were not used for training, estimating each person's balance threshold with and without assistance.</p>
     </div>
-    <figure>
-      <div class="media">
-        <video id="hwvideo" controls muted loop playsinline preload="metadata" src="static/videos/hardware_20p5cm.mp4"></video>
-      </div>
-      <figcaption>Left: exoskeleton off (zero commanded torque). Right: exoskeleton on with the simulation-trained controller. Videos are synchronized at perturbation onset and play once in real time, then at 0.25&times; speed.</figcaption>
-    </figure>
-  </div>
-</section>
-
-<section id="results">
-  <div class="wrap">
-    <h2>Results</h2>
-    <p class="lede">Five healthy participants whose data were not used for training.</p>
-    <div class="stack">
+    <div class="stack" style="margin-top:32px">
       <figure>
-        <div class="media" data-fig="static/images/fig3_sim2real.png" data-alt="Simulation-to-real evaluation of the learned controller"></div>
-        <figcaption><strong>Sim-to-real transfer.</strong> The human policy tracked recorded joint angles with an RMSE of 0.6 ± 0.2° and joint moments with 0.07 ± 0.04 Nm/kg. On hardware, assistance began 87 ± 12 ms after perturbation onset, and the simulation predicted the reduction in biological ankle moment (R² = 0.81).</figcaption>
+        <div class="media w-sm" data-fig="static/images/fig2_experiment.png" data-alt="Experimental protocol"></div>
+        <figcaption><strong>Experimental protocol.</strong> (A) Participants wore a bilateral ankle exoskeleton on a force-instrumented treadmill and experienced backward-translation perturbations. (B) Treadmill perturbation profiles and target belt displacements for a representative participant. (C) Perturbation levels selected by the QUEST adaptive algorithm, and the resulting balance thresholds, for a representative participant.</figcaption>
       </figure>
+
+      <div>
+        <h3 class="sub">Exoskeleton off vs. on</h3>
+        <p class="lede">The same perturbation magnitude with the exoskeleton off and on. The measured right-side exoskeleton torque is time-aligned with the video.</p>
+        <div class="tabs" role="tablist" aria-label="Perturbation magnitude">
+          <button class="tab" role="tab" aria-selected="true" data-src="static/videos/hardware_20p5cm.mp4">20.5 cm</button>
+          <button class="tab" role="tab" aria-selected="false" data-src="static/videos/hardware_23p2cm.mp4">23.2 cm</button>
+          <button class="tab" role="tab" aria-selected="false" data-src="static/videos/hardware_26p2cm.mp4">26.2 cm</button>
+        </div>
+        <figure>
+          <div class="media">
+            <video id="hwvideo" controls muted loop playsinline preload="metadata" src="static/videos/hardware_20p5cm.mp4"></video>
+          </div>
+          <figcaption>Left: exoskeleton off (zero commanded torque). Right: exoskeleton on with the simulation-trained controller. Videos are synchronized at perturbation onset and play once in real time, then at 0.25&times; speed.</figcaption>
+        </figure>
+      </div>
+
+      <figure>
+        <div class="media w-md" data-fig="static/images/fig3_sim2real.png" data-alt="Simulated versus on-device sensor signals, torque and ankle moments"></div>
+        <figcaption><strong>Simulation vs. real device.</strong> Gyroscope signals and exoskeleton torque in simulation and on hardware, and the reduction in biological ankle moment under assistance. On hardware, assistance began 87 ± 12 ms after perturbation onset, and the simulation predicted the ankle moment offloading (R² = 0.81).</figcaption>
+      </figure>
+
       <div class="figgrid">
         <figure>
           <div class="media" data-fig="static/images/fig4_balance_outcomes.png" data-alt="Effect of assistance on balance threshold and center-of-mass motion"></div>
-          <figcaption><strong>Balance outcomes.</strong> Assistance raised the balance threshold and reduced center-of-mass displacement and velocity relative to the base of support.</figcaption>
+          <figcaption><strong>Balance outcomes.</strong> Assistance raised the balance threshold by 11.8% and reduced peak center-of-mass displacement and velocity by 13.5% and 28.2%.</figcaption>
         </figure>
         <figure>
           <div class="media" data-fig="static/images/fig5_recovery_strategy.png" data-alt="Change in balance threshold versus hip-to-ankle moment ratio"></div>
