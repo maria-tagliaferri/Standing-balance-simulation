@@ -114,6 +114,7 @@
   .phasenav .tag { display: block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 4px; }
   .phasenav b { display: block; color: var(--ink); font-size: 1.05rem; }
   .phasenav a > span:last-child { font-size: 0.92rem; color: var(--muted); }
+  .discussion h3 { text-align: center; font-size: 1.25rem; margin-bottom: 14px; }
   .figgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
   .stack > * + * { margin-top: 40px; }
 
@@ -149,6 +150,7 @@
       <a class="btn" href="https://arxiv.org/pdf/2611.25480">Paper</a>
       <a class="btn" href="https://arxiv.org/abs/2611.25480">arXiv</a>
       <a class="btn" href="#videos">Videos</a>
+      <a class="btn" href="#results">Results</a>
       <a class="btn" href="#bibtex">BibTeX</a>
     </nav>
   </div>
@@ -197,14 +199,14 @@
       <p>The policy is rewarded for matching recorded joint angles and joint moments, with penalties that keep it tracking the recovery even when a perturbation pushes it far from the reference. It is never told when a perturbation starts, how long it lasts, or in which direction it acts.</p>
     </div>
     <figure style="margin-top:32px">
-      <div class="media" data-fig="static/images/fig3_imitation.png" data-alt="Motion-tracking performance of the human policy"></div>
-      <figcaption><strong>Tracking performance.</strong> Simulated and recorded ankle angle and ankle moment for a small perturbation and for two trials of the same larger perturbation. Across all magnitudes the model tracked joint angles with an RMSE of 0.6 ± 0.2° and joint moments with 0.07 ± 0.04 Nm/kg, capturing trial-to-trial variability in the response.</figcaption>
-    </figure>
-    <figure style="margin-top:40px">
       <div class="media w-md">
         <video controls muted loop playsinline preload="metadata" src="static/videos/imitation_overlay.mp4"></video>
       </div>
       <figcaption><strong>Simulation overlaid on the reference.</strong> The reference motion (green) with the simulated muscle-driven model on top, for four trials: 6 cm, 15 cm, and two different trials of the same 20 cm backward perturbation. The joint angle RMSE for each trial, averaged across the hip, knee, ankle and lumbar joints, is shown in the video.</figcaption>
+    </figure>
+    <figure style="margin-top:40px">
+      <div class="media w-md" data-fig="static/images/fig3_imitation.png" data-alt="Motion-tracking performance of the human policy"></div>
+      <figcaption><strong>Tracking performance.</strong> Simulated and recorded ankle angle and ankle moment for a small perturbation and for two trials of the same larger perturbation. Across all magnitudes the model tracked joint angles with an RMSE of 0.6 ± 0.2° and joint moments with 0.07 ± 0.04 Nm/kg, capturing trial-to-trial variability in the response.</figcaption>
     </figure>
   </div>
 </section>
@@ -254,7 +256,15 @@
           <figcaption>Left: exoskeleton off (zero commanded torque). Right: exoskeleton on with the simulation-trained controller. Videos are synchronized at perturbation onset and play once in real time, then at 0.25&times; speed.</figcaption>
         </figure>
       </div>
+    </div>
+  </div>
+</section>
 
+<section id="results" class="alt">
+  <div class="wrap">
+    <h2>Results</h2>
+    <p class="lede">Five healthy participants whose data were not used for training, with no subject-specific tuning.</p>
+    <div class="stack">
       <figure>
         <div class="media w-md" data-fig="static/images/fig3_sim2real.png" data-alt="Simulated versus on-device sensor signals, torque and ankle moments"></div>
         <figcaption><strong>Simulation vs. real device.</strong> Gyroscope signals and exoskeleton torque in simulation and on hardware, and the reduction in biological ankle moment under assistance. On hardware, assistance began 87 ± 12 ms after perturbation onset, and the simulation predicted the ankle moment offloading (R² = 0.81).</figcaption>
@@ -270,6 +280,22 @@
           <figcaption><strong>Who benefits most.</strong> Participants with more ankle-dominant recovery strategies, and lighter participants, gained the most from assistance.</figcaption>
         </figure>
       </div>
+
+      <div class="narrow discussion">
+        <h3>What the results show</h3>
+        <p>To our knowledge, this work is the first to train a balance-assistive ankle exoskeleton controller in neuromusculoskeletal simulation and deploy it on a physical device. Unlike prior balance-assistive controllers that deliver predefined torque profiles at prescribed delays or rely on a separate perturbation-detection stage, the learned policy generated assistance directly from real-time shank and foot angular velocities. It delivered plantarflexion torque that peaked before the biological ankle-moment response, and adjusted assistance magnitude and duration to the specific perturbation.</p>
+        <p>The simulation reproduced key features of the hardware response, including assistance timing relative to the biological response and the reduction in biological ankle moment under assistance. However, it underestimated the threshold improvement (4% in simulation vs. 11.8% on hardware), and on hardware the assistance began earlier and reached a slightly higher peak torque. These differences highlight that the behavior and performance of simulation-based control depend on the fidelity of the virtual human and the device model.</p>
+        <p>The benefit of assistance also depended on the user. Participants who relied more on the ankle during exo-off recovery gained the most, suggesting that the effectiveness of ankle assistance depends partly on how individuals naturally regulate balance. The smaller gains in heavier participants may reflect the lower relative assistance provided by the fixed 16 Nm torque limit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="conclusion">
+  <div class="wrap">
+    <h2>Conclusion</h2>
+    <div class="narrow">
+      <p>This work trained a balance-assistive ankle exoskeleton controller entirely in neuromusculoskeletal simulation and deployed it on hardware without subject-specific tuning. In five participants not used for training, the learned assistance increased the balance threshold and reduced peak center-of-mass displacement and velocity during backward-translation perturbations. The findings of this study motivate extending this framework to more diverse virtual human populations and broader perturbation conditions, so that the learned assistance accounts for the range of body sizes and recovery strategies seen across users.</p>
     </div>
   </div>
 </section>
