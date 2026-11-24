@@ -177,7 +177,7 @@
 <section id="overview" class="alt">
   <div class="wrap">
     <h2>Simulation-to-real framework</h2>
-    <p class="lede">A virtual human learns to respond to perturbations like a real one, then an exoskeleton policy learns to help it, and that policy runs directly on the device.</p>
+    <p class="lede">A virtual human is trained to reproduce human responses to balance perturbations. An exoskeleton policy then learns to assist its recovery and is deployed directly on the physical device.</p>
     <figure>
       <div class="media w-md" data-fig="static/images/fig1_framework.png" data-alt="Overview of the simulation-to-real framework"></div>
       <figcaption>Overview of the framework. (A) Phase 1: training the human policy to reproduce recorded responses to backward-translation perturbations. (B) Phase 2: training the exoskeleton controller to reduce center-of-mass excursion and increase the balance threshold of the simulated human. (C) Phase 3: deployment on the ankle exoskeleton using on-board sensor inputs.</figcaption>
@@ -202,7 +202,7 @@
       <div class="media w-md">
         <video controls muted loop playsinline preload="metadata" src="static/videos/imitation_overlay.mp4"></video>
       </div>
-      <figcaption><strong>Simulation overlaid on reference data. Reference motion (green) and the simulated muscle-driven model overlaid for four trials: 6 cm, 15 cm, and two trials of the same 20 cm backward perturbation. The video displays the joint angle RMSE for each trial, averaged across the hip, knee, ankle, and lumbar joints.</figcaption>
+      <figcaption><strong>Simulation overlaid on reference data. Reference motion (green) and the simulated muscle-driven model overlaid for four trials: 6 cm, 15 cm, and two trials of the same 20 cm backward perturbation (to capture subject variability). The video displays the joint angle RMSE for each trial, averaged across the hip, knee, ankle, and lumbar joints.</figcaption>
     </figure>
     <figure style="margin-top:40px">
       <div class="media w-md" data-fig="static/images/fig3_imitation.png" data-alt="Motion-tracking performance of the human policy"></div>
@@ -242,7 +242,7 @@
       </figure>
 
       <div>
-        <h3 class="sub">Balance responce with adn without exoskeleton assistance</h3>
+        <h3 class="sub">Balance responce with and without exoskeleton assistance</h3>
         <p class="lede">The subject experiences the same perturbation magnitude with and without exoskeleton assistance. Exoskeleton torque profile shown in blue.</p>
         <div class="tabs" role="tablist" aria-label="Perturbation magnitude">
           <button class="tab" role="tab" aria-selected="true" data-src="static/videos/hardware_20p5cm.mp4">20.5 cm</button>
