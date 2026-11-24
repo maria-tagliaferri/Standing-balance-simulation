@@ -120,6 +120,8 @@
   .split .text p:last-child { margin-bottom: 0; }
   .split figure { margin: 0; }
   .split figure.fig-compact { max-width: 500px; margin-left: auto; margin-right: auto; }
+  .split.top { align-items: start; }
+  .split .discussion h3 { text-align: left; }
   @media (max-width: 980px) { .split { grid-template-columns: 1fr; gap: 28px; } }
   .figgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
   .stack > * + * { margin-top: 40px; }
@@ -274,14 +276,19 @@
 <section id="results" class="alt">
   <div class="wrap">
     <h2>Results</h2>
-    <p class="lede">Five healthy participants whose data were not used for training, with no subject-specific tuning.</p>
-    <div class="stack">
+    <div class="split top" style="margin-top:8px">
+      <div class="text discussion">
+        <h3>What the results show</h3>
+        <p>To our knowledge, this work is the first to train a balance-assistive ankle exoskeleton controller in neuromusculoskeletal simulation and deploy it on a physical device. Unlike prior balance-assistive controllers that deliver predefined torque profiles at prescribed delays or rely on a separate perturbation-detection stage, the learned policy generated assistance directly from real-time shank and foot angular velocities. It delivered plantarflexion torque that peaked before the biological ankle-moment response, and adjusted assistance magnitude and duration to the specific perturbation.</p>
+        <p>The simulation reproduced key features of the hardware response, including assistance timing relative to the biological response and the reduction in biological ankle moment under assistance. However, it underestimated the threshold improvement (4% in simulation vs. 11.8% on hardware), and on hardware the assistance began earlier and reached a slightly higher peak torque. These differences highlight that the behavior and performance of simulation-based control depend on the fidelity of the virtual human and the device model.</p>
+        <p>The benefit of assistance also depended on the user. Participants who relied more on the ankle during exo-off recovery gained the most, suggesting that the effectiveness of ankle assistance depends partly on how individuals naturally regulate balance. The smaller gains in heavier participants may reflect the lower relative assistance provided by the fixed 16 Nm torque limit.</p>
+      </div>
       <figure>
-        <div class="media w-md" data-fig="static/images/fig3_sim2real.png" data-alt="Simulated versus on-device sensor signals, torque and ankle moments"></div>
+        <div class="media" data-fig="static/images/fig3_sim2real.png" data-alt="Simulated versus on-device sensor signals, torque and ankle moments"></div>
         <figcaption><strong>Simulation vs. real device.</strong> Gyroscope signals and exoskeleton torque in simulation and on hardware, and the reduction in biological ankle moment under assistance. On hardware, assistance began 87 ± 12 ms after perturbation onset, and the simulation predicted the ankle moment offloading (R² = 0.81).</figcaption>
       </figure>
-
-      <div class="figgrid">
+    </div>
+      <div class="figgrid" style="margin-top:48px">
         <figure>
           <div class="media" data-fig="static/images/fig4_balance_outcomes.png" data-alt="Effect of assistance on balance threshold and center-of-mass motion"></div>
           <figcaption><strong>Balance outcomes.</strong> Assistance raised the balance threshold by 11.8% and reduced peak center-of-mass displacement and velocity by 13.5% and 28.2%.</figcaption>
@@ -291,14 +298,6 @@
           <figcaption><strong>Who benefits most.</strong> Participants with more ankle-dominant recovery strategies, and lighter participants, gained the most from assistance.</figcaption>
         </figure>
       </div>
-
-      <div class="narrow discussion">
-        <h3>What the results show</h3>
-        <p>To our knowledge, this work is the first to train a balance-assistive ankle exoskeleton controller in neuromusculoskeletal simulation and deploy it on a physical device. Unlike prior balance-assistive controllers that deliver predefined torque profiles at prescribed delays or rely on a separate perturbation-detection stage, the learned policy generated assistance directly from real-time shank and foot angular velocities. It delivered plantarflexion torque that peaked before the biological ankle-moment response, and adjusted assistance magnitude and duration to the specific perturbation.</p>
-        <p>The simulation reproduced key features of the hardware response, including assistance timing relative to the biological response and the reduction in biological ankle moment under assistance. However, it underestimated the threshold improvement (4% in simulation vs. 11.8% on hardware), and on hardware the assistance began earlier and reached a slightly higher peak torque. These differences highlight that the behavior and performance of simulation-based control depend on the fidelity of the virtual human and the device model.</p>
-        <p>The benefit of assistance also depended on the user. Participants who relied more on the ankle during exo-off recovery gained the most, suggesting that the effectiveness of ankle assistance depends partly on how individuals naturally regulate balance. The smaller gains in heavier participants may reflect the lower relative assistance provided by the fixed 16 Nm torque limit.</p>
-      </div>
-    </div>
   </div>
 </section>
 
